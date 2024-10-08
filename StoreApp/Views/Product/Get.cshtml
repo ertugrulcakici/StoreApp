@@ -1,0 +1,43 @@
+@model Product
+
+@* Burası zaten _ViewStart.cshtml dosyasında belirtilmişti. Bu yüzden Layout belirtmeye gerek yok. *@
+@* @{
+Layout = "_Layout";
+}
+
+@section Header {
+<div>
+Only for get header
+</div>
+} *@
+
+@* Eğer Layout belirtmezseniz, _ViewStart.cshtml dosyasında belirtilen Layout kullanılır. Eğer Layout belirtirseniz,
+belirttiğiniz Layout kullanılır. Layout kullanmamak istiyorsanız, Layout = null; şeklinde belirtmelisiniz. *@
+@* @{
+Layout = null;
+} *@
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="text-center">
+            <h6 class="display-6">@Model.ProductName</h6>
+            <img src="@Model.ImageUrl" class="img-fluid shadow rounded-3 my-3" alt="@Model.ProductName">
+            <p class="lead text-danger"> @Model.Price.ToString()</p>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+        <h2>@Model.ProductName</h2>
+        <p>@Model.Price</p>
+    <div class="btn-group">
+        <a class="btn btn-outline-primary" asp-controller="Product" asp-action="Index"> <i class="fa-solid fa-house"></i> Home</a>
+         <form id="@Model.ProductId" asp-page="/cart" method="post">
+             <input type="hidden" asp-for="ProductId" />
+             <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+             <button type="submit" class="btn btn-outline-primary"><i class="fa-solid fa-cart-plus"></i></button>
+        </form>
+        <a class="btn btn-outline-primary" asp-controller="Product" asp-action="Index"> <i class="fa fa-list"></i> Products</a>
+    </div>      
+</div>

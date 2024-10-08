@@ -1,0 +1,59 @@
+@page "/cart"
+@model CartModel
+
+Cart (@Model.Cart.Lines.Count)
+
+<div>
+    <div class="text-center display-6">Cart</div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>SubTotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Cart?.Lines ?? Enumerable.Empty<CartLine>())
+            {
+                <tr>
+                    <td>@line.Product.ProductName</td>
+                    <td>@line.Quantity</td>
+                    <td>@line.Product.Price.ToString("c")</td>
+                    <td>@line.Total.ToString("c2")</td>
+                    <td>
+                        <form method="post" asp-page-handler="Remove">
+                            <!-- Burada asp-page-handler i ayný sayfada birden fazla post isteði olduðu için kullandýk.  -->
+                            <input type="hidden" name="ProductId" value="@line.Product.ProductId" />
+                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash"></i>
+                                Remove
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Total</td>
+                <td class="text-right text-danger">
+                    @((Model.Cart?.ComputeTotalValue() ?? 0).ToString("c2"))
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-center my-3">
+        <div class="btn-group">
+            <div class="btn btn-outline-primary">
+                <a class="btn btn-primary" href="@Model?.ReturnUrl"> Alýþveriþe devam et </a>
+                <a class="btn btn-primary mx-2" asp-action="Checkout" asp-controller="Order"> Checkout </a>
+
+            </div>
+        </div>
+
+    </div>
+</div>
